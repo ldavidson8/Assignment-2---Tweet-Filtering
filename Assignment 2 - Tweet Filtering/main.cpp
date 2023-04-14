@@ -36,25 +36,12 @@ void censorTweets() {
 }
 
 void analyzeSentiment() {
-	TweetSentiment tweetSentiment(posFilePath, negFilePath);
+	TweetSentiment tweetSentiment(tweetsDirPath, bannedWordsDirPath, posFilePath, negFilePath);
 
 	cout << "Analyzing tweet sentiment..." << endl;
-	for (const auto& entry : filesystem::directory_iterator(tweetsDirPath)) {
-		if (entry.is_regular_file()) {
-			ifstream file(entry.path());
-			string tweet;
-			getline(file, tweet);
-
-			string sentiment = tweetSentiment.analyze(tweet);
-
-			clearScreen();
-			cout << "Tweet: " << tweet << endl;
-			cout << "Sentiment: " << sentiment << endl;
-
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		}
-	}
+	tweetSentiment.analyzeSentiment();
 }
+
 
 int main() {
 	while (true) {

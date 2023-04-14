@@ -1,16 +1,24 @@
 #pragma once
-#include <string>
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <filesystem>
+#include <algorithm>
+#include <vector>
+#include "BannedWords.h"
+
+namespace fs = std::filesystem;
 
 class TweetSentiment {
 public:
-    TweetSentiment(const std::string& posFilePath, const std::string& negFilePath);
-
-    std::string analyze(const std::string& tweet) const;
-
+    TweetSentiment(const std::string tweetsDirPath, const std::string bannedWordsDirPath,
+        const std::string posFilePath, const std::string negFilePath);
+    void analyzeSentiment();
 private:
-    int countSentimentWords(const std::string& tweet, const std::string& sentimentFilePath) const;
-    std::string determineSentiment(int positiveCount, int negativeCount) const;
-
-    std::string posFilePath;
-    std::string negFilePath;
+    std::string tweetsDirPath;
+    BannedWords bannedWords;
+    std::vector<std::string> positiveWords;
+    std::vector<std::string> negativeWords;
+    std::vector<std::string> tweets;
 };
