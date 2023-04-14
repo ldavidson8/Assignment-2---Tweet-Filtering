@@ -135,11 +135,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TweetCensor.cpp" />
     <ClCompile Include="TweetCensorApp.cpp" />
+    <ClCompile Include="TweetSentiment.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BannedWords.h" />
     <ClInclude Include="TweetCensor.h" />
     <ClInclude Include="TweetCensorApp.h" />
+    <ClInclude Include="TweetSentiment.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

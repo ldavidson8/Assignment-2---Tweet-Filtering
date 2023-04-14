@@ -19,9 +19,9 @@ public:
 
 	bool isBannedWord(const string word) const;
 
-	vector<string>::const_iterator begin() const;
-
-	vector<string>::const_iterator end() const;
+	string censorMiddleChar(const string word) const;
 
 	string censorWord(string word) const;
+
+
 };
