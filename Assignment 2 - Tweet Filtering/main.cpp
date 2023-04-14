@@ -6,6 +6,7 @@
 #include "TweetCensorApp.h"
 #include "TweetSentiment.h"
 #include <filesystem>
+#include <unordered_map>
 
 using namespace std;
 
@@ -27,7 +28,8 @@ void printMenu() {
 	cout << "What would you like to do?" << endl;
 	cout << "1. Censor tweets" << endl;
 	cout << "2. Analyze tweet sentiment" << endl;
-	cout << "3. Quit" << endl;
+	cout << "3. Find top 10 most frequent words" << endl;
+	cout << "4. Quit" << endl;
 }
 
 void censorTweets() {
@@ -42,6 +44,37 @@ void analyzeSentiment() {
 	tweetSentiment.analyzeSentiment();
 }
 
+void countWords(const string& tweetsDirPath) {
+	unordered_map<string, int> wordCounts;
+	for (const auto& entry : fs::directory_iterator(tweetsDirPath)) {
+		if (entry.is_regular_file()) {
+			ifstream file(entry.path());
+			string tweet;
+			while (getline(file, tweet)) {
+				istringstream iss(tweet);
+				string word;
+				while (iss >> word) {
+					transform(word.begin(), word.end(), word.begin(), ::tolower);
+					wordCounts[word]++;
+				}
+			}
+		}
+	}
+
+	vector<pair<string, int>> sortedWordCounts(wordCounts.begin(), wordCounts.end());
+	auto comparePairsBySecond = [](const auto& p1, const auto& p2) {
+		return p1.second > p2.second;
+	};
+
+	// Sort the vector of pairs by count
+	sort(sortedWordCounts.begin(), sortedWordCounts.end(), comparePairsBySecond);
+
+	cout << "Top 10 most frequent words:" << endl;
+	for (int i = 0; i < 10 && i < sortedWordCounts.size(); i++) {
+		cout << sortedWordCounts[i].first << ": " << sortedWordCounts[i].second << endl;
+	}
+}
+
 
 int main() {
 	while (true) {
@@ -53,8 +86,11 @@ int main() {
 		}
 		else if (userInput == "2") {
 			analyzeSentiment();
-		}
+		}		
 		else if (userInput == "3") {
+			countWords(tweetsDirPath);
+		}
+		else if (userInput == "4") {
 			break;
 		}
 		else {
